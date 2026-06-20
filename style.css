@@ -1,0 +1,867 @@
+/* ============================================================
+   style.css — SecurePass Password Generator
+   Author : Naina (raghuvanshinaina06@gmail.com)
+   Built for Digital Heroes — https://digitalheroesco.com
+   ============================================================ */
+
+/* ─────────────────────────────────────────────────────────────
+   1. CSS CUSTOM PROPERTIES (Design Tokens)
+───────────────────────────────────────────────────────────── */
+:root {
+  /* Color Palette */
+  --clr-bg:            #0b0d17;
+  --clr-surface:       rgba(255, 255, 255, 0.04);
+  --clr-surface-hover: rgba(255, 255, 255, 0.07);
+  --clr-border:        rgba(255, 255, 255, 0.09);
+  --clr-border-focus:  rgba(139, 92, 246, 0.6);
+
+  /* Accent / Brand */
+  --clr-violet:        #8b5cf6;
+  --clr-violet-light:  #a78bfa;
+  --clr-violet-dark:   #6d28d9;
+  --clr-cyan:          #06b6d4;
+  --clr-pink:          #ec4899;
+
+  /* Gradients */
+  --grad-brand:   linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+  --grad-hero:    linear-gradient(135deg, #ec4899 0%, #f59e0b 100%);
+  --grad-card:    linear-gradient(160deg, rgba(139,92,246,0.15) 0%, rgba(6,182,212,0.08) 100%);
+
+  /* Strength Colors */
+  --clr-weak:      #ef4444;
+  --clr-fair:      #f97316;
+  --clr-good:      #eab308;
+  --clr-strong:    #22c55e;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Sizing */
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  22px;
+  --radius-xl:  30px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-card: 0 25px 60px rgba(0, 0, 0, 0.5),
+                 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-btn:  0 8px 24px rgba(139, 92, 246, 0.35);
+  --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.2);
+
+  /* Transitions */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast:   0.15s;
+  --t-normal: 0.28s;
+  --t-slow:   0.45s;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2. CSS RESET & BASE STYLES
+───────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--clr-bg);
+  color: #e2e8f0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   3. ANIMATED BACKGROUND BLOBS
+───────────────────────────────────────────────────────────── */
+.bg-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.18;
+  pointer-events: none;
+  animation: floatBlob 12s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+.blob-1 {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, #8b5cf6, transparent 70%);
+  top: -180px;
+  left: -160px;
+  animation-delay: 0s;
+}
+
+.blob-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #06b6d4, transparent 70%);
+  bottom: -140px;
+  right: -120px;
+  animation-delay: -4s;
+}
+
+.blob-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #ec4899, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -8s;
+  opacity: 0.08;
+}
+
+@keyframes floatBlob {
+  from { transform: translate(0, 0) scale(1);   }
+  to   { transform: translate(30px, 40px) scale(1.08); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   4. MAIN WRAPPER
+───────────────────────────────────────────────────────────── */
+.wrapper {
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   5. CARD HEADER
+───────────────────────────────────────────────────────────── */
+.card-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: slideDown var(--t-slow) var(--ease-smooth) both;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  border-radius: var(--radius-lg);
+  background: var(--grad-brand);
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-btn), var(--shadow-glow);
+  animation: pulseLogo 3s ease-in-out infinite;
+}
+
+@keyframes pulseLogo {
+  0%, 100% { box-shadow: var(--shadow-btn), 0 0 40px rgba(139,92,246,0.2); }
+  50%       { box-shadow: var(--shadow-btn), 0 0 60px rgba(139,92,246,0.4); }
+}
+
+.lock-icon {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+}
+
+.app-title {
+  font-size: clamp(2rem, 5vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+}
+
+.app-subtitle {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   6. MAIN CARD
+───────────────────────────────────────────────────────────── */
+.card {
+  background: var(--grad-card);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-xl);
+  padding: 2.2rem 2rem;
+  box-shadow: var(--shadow-card);
+  animation: fadeUp var(--t-slow) var(--ease-smooth) 0.1s both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   7. PASSWORD DISPLAY BOX
+───────────────────────────────────────────────────────────── */
+.password-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.4rem;
+  min-height: 62px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--t-normal) var(--ease-smooth),
+              box-shadow    var(--t-normal) var(--ease-smooth);
+}
+
+.password-box:focus-within {
+  border-color: var(--clr-border-focus);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+/* Shimmering inner border glow when a password exists */
+.password-box.has-password {
+  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+}
+
+.password-text {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #e2e8f0;
+  word-break: break-all;
+  line-height: 1.5;
+  min-width: 0;
+  transition: color var(--t-fast);
+}
+
+.password-text.placeholder {
+  font-family: var(--font-sans);
+  color: #475569;
+  font-weight: 400;
+  font-size: 0.9rem;
+  letter-spacing: normal;
+}
+
+/* Copy icon button (inside the password box) */
+.copy-btn {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background var(--t-fast), color var(--t-fast),
+              border-color var(--t-fast), transform var(--t-fast) var(--ease-bounce);
+}
+
+.copy-btn:hover:not(:disabled) {
+  background: var(--clr-violet);
+  border-color: var(--clr-violet);
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.copy-btn:active:not(:disabled) { transform: scale(0.95); }
+
+.copy-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Toggle between copy and check icons */
+.copy-btn .icon { width: 16px; height: 16px; position: absolute; transition: opacity var(--t-fast), transform var(--t-fast); }
+.copy-btn .icon-copy  { opacity: 1; transform: scale(1); }
+.copy-btn .icon-check { opacity: 0; transform: scale(0.6); }
+
+.copy-btn.copied .icon-copy  { opacity: 0; transform: scale(0.6); }
+.copy-btn.copied .icon-check { opacity: 1; transform: scale(1); color: #4ade80; }
+
+/* ─────────────────────────────────────────────────────────────
+   8. STRENGTH INDICATOR
+───────────────────────────────────────────────────────────── */
+.strength-section {
+  margin-bottom: 1.8rem;
+}
+
+.strength-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.55rem;
+}
+
+.strength-label-text {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+}
+
+.strength-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #94a3b8;
+  transition: color var(--t-normal);
+  letter-spacing: 0.02em;
+}
+
+/* Strength segment bar */
+.strength-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  height: 6px;
+}
+
+.strength-segment {
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.07);
+  transition: background var(--t-normal) var(--ease-smooth),
+              transform  var(--t-normal) var(--ease-bounce);
+}
+
+.strength-segment.active { transform: scaleY(1.4); }
+
+/* Strength level color states */
+.strength-bar[data-level="1"] .strength-segment:nth-child(-n+1) { background: var(--clr-weak); }
+.strength-bar[data-level="2"] .strength-segment:nth-child(-n+2) { background: var(--clr-fair); }
+.strength-bar[data-level="3"] .strength-segment:nth-child(-n+3) { background: var(--clr-good); }
+.strength-bar[data-level="4"] .strength-segment:nth-child(-n+4) { background: var(--clr-strong); }
+
+/* ─────────────────────────────────────────────────────────────
+   9. CONTROLS SECTION
+───────────────────────────────────────────────────────────── */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.control-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  display: block;
+}
+
+.control-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.length-value {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--clr-violet-light);
+  min-width: 2.5ch;
+  text-align: right;
+  transition: color var(--t-fast), transform var(--t-fast) var(--ease-bounce);
+}
+
+.length-value.bump {
+  transform: scale(1.2);
+  color: var(--clr-cyan);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   10. RANGE SLIDER
+───────────────────────────────────────────────────────────── */
+.slider-wrapper {
+  position: relative;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-pill);
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+/* Filled track overlay */
+.slider-track-fill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--grad-brand);
+  pointer-events: none;
+  z-index: 1;
+  transition: width var(--t-fast);
+}
+
+/* Thumb styling — cross-browser */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 3px var(--clr-violet), 0 4px 12px rgba(0,0,0,0.4);
+  cursor: pointer;
+  transition: box-shadow var(--t-fast) var(--ease-bounce),
+              transform  var(--t-fast) var(--ease-bounce);
+}
+
+.slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 5px var(--clr-violet), 0 4px 16px rgba(139,92,246,0.5);
+  transform: scale(1.15);
+}
+
+.slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 3px var(--clr-violet), 0 4px 12px rgba(0,0,0,0.4);
+  border: none;
+  cursor: pointer;
+  transition: box-shadow var(--t-fast);
+}
+
+.slider::-moz-range-thumb:hover {
+  box-shadow: 0 0 0 5px var(--clr-violet), 0 4px 16px rgba(139,92,246,0.5);
+}
+
+/* Hide default Firefox track */
+.slider::-moz-range-track { background: transparent; }
+
+.slider-limits {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: #475569;
+  font-weight: 500;
+  margin-top: -2px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   11. CHECKBOX CARDS
+───────────────────────────────────────────────────────────── */
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.checkbox-card {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 1rem;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background    var(--t-fast) var(--ease-smooth),
+              border-color  var(--t-fast) var(--ease-smooth),
+              transform     var(--t-fast) var(--ease-bounce),
+              box-shadow    var(--t-fast) var(--ease-smooth);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.checkbox-card:hover {
+  background: var(--clr-surface-hover);
+  border-color: rgba(139, 92, 246, 0.3);
+  transform: translateY(-1px);
+}
+
+.checkbox-card:active { transform: translateY(0) scale(0.98); }
+
+/* Checked state of the card */
+.checkbox-card:has(.checkbox-input:checked) {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2) inset;
+}
+
+/* Hide the native checkbox */
+.checkbox-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Custom checkbox visual */
+.checkbox-custom {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast) var(--ease-bounce);
+}
+
+.checkbox-card:has(.checkbox-input:checked) .checkbox-custom {
+  background: var(--grad-brand);
+  border-color: transparent;
+  transform: scale(1.1);
+}
+
+/* Checkmark inside */
+.checkbox-card:has(.checkbox-input:checked) .checkbox-custom::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: 2.5px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translateY(-1px);
+}
+
+/* Text info */
+.checkbox-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.checkbox-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  line-height: 1;
+}
+
+.checkbox-sample {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: #64748b;
+}
+
+.checkbox-card:has(.checkbox-input:checked) .checkbox-title { color: #e2e8f0; }
+.checkbox-card:has(.checkbox-input:checked) .checkbox-sample { color: var(--clr-violet-light); }
+
+/* ─────────────────────────────────────────────────────────────
+   12. ACTION BUTTONS
+───────────────────────────────────────────────────────────── */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+/* Base button */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.95rem 1.5rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 0.97rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform     var(--t-fast) var(--ease-bounce),
+              box-shadow    var(--t-fast) var(--ease-smooth),
+              opacity       var(--t-fast);
+}
+
+/* Ripple effect pseudo-element */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.12);
+  opacity: 0;
+  border-radius: inherit;
+  transition: opacity var(--t-fast);
+}
+
+.btn:hover::before { opacity: 1; }
+.btn:active { transform: scale(0.97); }
+
+.btn-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Generate button — gradient primary */
+.btn-generate {
+  background: var(--grad-brand);
+  color: #fff;
+  box-shadow: var(--shadow-btn);
+}
+
+.btn-generate:hover {
+  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-generate:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: var(--shadow-btn);
+}
+
+/* Generate button spin animation */
+.btn-generate.generating .btn-icon {
+  animation: spinOnce 0.5s var(--ease-smooth);
+}
+
+@keyframes spinOnce {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Copy button — ghost style */
+.btn-copy-main {
+  background: transparent;
+  color: var(--clr-violet-light);
+  border: 1.5px solid rgba(139, 92, 246, 0.4);
+}
+
+.btn-copy-main:hover:not(:disabled) {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: var(--clr-violet);
+  transform: translateY(-1px);
+}
+
+.btn-copy-main:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   13. TOAST NOTIFICATION
+───────────────────────────────────────────────────────────── */
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1.2rem;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: var(--radius-md);
+  color: #4ade80;
+  font-size: 0.88rem;
+  font-weight: 600;
+  gap: 0.4rem;
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
+  transition: opacity var(--t-normal) var(--ease-smooth),
+              transform var(--t-normal) var(--ease-bounce);
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   14. FOOTER
+───────────────────────────────────────────────────────────── */
+.footer {
+  margin-top: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: fadeUp var(--t-slow) var(--ease-smooth) 0.25s both;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.footer-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #e2e8f0;
+  text-transform: uppercase;
+}
+
+.footer-email {
+  font-size: 0.82rem;
+  color: #64748b;
+  text-decoration: none;
+  transition: color var(--t-fast);
+  letter-spacing: 0.02em;
+}
+
+.footer-email:hover { color: var(--clr-violet-light); text-decoration: underline; }
+
+/* ─────────────────────────────────────────────────────────────
+   15. HERO BUTTON ("Built for Digital Heroes")
+───────────────────────────────────────────────────────────── */
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.6rem;
+  background: var(--grad-hero);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.35);
+  transition: transform    var(--t-fast) var(--ease-bounce),
+              box-shadow   var(--t-fast) var(--ease-smooth),
+              filter       var(--t-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  opacity: 0;
+  border-radius: inherit;
+  transition: opacity var(--t-fast);
+}
+
+.hero-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(236, 72, 153, 0.5);
+  filter: brightness(1.08);
+}
+
+.hero-btn:hover::before { opacity: 1; }
+.hero-btn:active { transform: scale(0.97); }
+
+.hero-icon {
+  width: 16px;
+  height: 16px;
+  fill: rgba(255,255,255,0.8);
+  stroke: none;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.7; transform: scale(0.9); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   16. RESPONSIVE — MOBILE
+───────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  body { padding: 1.2rem 0.85rem; }
+
+  .card {
+    padding: 1.6rem 1.2rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .checkbox-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+
+  .checkbox-card { padding: 0.75rem 0.85rem; }
+
+  .actions { gap: 0.7rem; }
+
+  .btn { font-size: 0.93rem; padding: 0.9rem 1.2rem; }
+}
+
+@media (max-width: 360px) {
+  .checkbox-grid { grid-template-columns: 1fr; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   17. FOCUS-VISIBLE ACCESSIBILITY STYLES
+───────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--clr-violet-light);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--clr-violet-light);
+  outline-offset: 3px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   18. REDUCED MOTION
+───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
